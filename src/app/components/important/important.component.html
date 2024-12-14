@@ -1,0 +1,217 @@
+<div class="important-container">
+  <div class="content-wrapper">
+    <!-- Analytics Dashboard -->
+    <div class="analytics-section">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">{{ taskStats.total }}</div>
+          <div class="stat-label">Total Tasks</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ taskStats.completed }}</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ taskStats.pending }}</div>
+          <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-value">{{ taskStats.overdue }}</div>
+          <div class="stat-label">Overdue</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>Task Progress Overview</h3>
+          <canvas baseChart
+            [type]="pieChartType"
+            [data]="pieChartData"
+            [options]="pieChartOptions">
+          </canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Weekly Completion Trend</h3>
+          <canvas baseChart
+            [type]="barChartType"
+            [data]="barChartData"
+            [options]="barChartOptions">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task Management -->
+    <div class="task-management-section">
+      <!-- Filters -->
+      <div class="filters-bar">
+        <select [(ngModel)]="selectedCategory" (change)="applyFilters()" class="filter-select">
+          <option value="all">All Categories</option>
+          <option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </option>
+        </select>
+
+        <select [(ngModel)]="selectedPriority" (change)="applyFilters()" class="filter-select">
+          <option value="all">All Priorities</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+
+        <label class="show-completed-toggle">
+          <input type="checkbox" [(ngModel)]="showCompleted" (change)="applyFilters()">
+          Show Completed Tasks
+        </label>
+      </div>
+
+      <!-- Add Task Form -->
+      <div class="card add-task-card">
+        <div class="card-header">
+          <h2>Add Important Task</h2>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="addTask()" class="task-form">
+            <div class="form-group">
+              <label for="title">Title</label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                [(ngModel)]="newTask.title"
+                required
+                class="form-input"
+                placeholder="Enter task title">
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea
+                id="description"
+                name="description"
+                [(ngModel)]="newTask.description"
+                class="form-input"
+                placeholder="Enter task description"
+                rows="3"></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="category">Category</label>
+                <select
+                  id="category"
+                  name="category"
+                  [(ngModel)]="newTask.category"
+                  class="form-input">
+                  <option *ngFor="let category of categories" [value]="category">
+                    {{ category }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="priority">Priority</label>
+                <select
+                  id="priority"
+                  name="priority"
+                  [(ngModel)]="newTask.priority"
+                  class="form-input">
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="deadline">Deadline</label>
+                <input
+                  type="date"
+                  id="deadline"
+                  name="deadline"
+                  [(ngModel)]="newTask.deadline"
+                  class="form-input">
+              </div>
+
+              <div class="form-group">
+                <label for="reminder">Reminder</label>
+                <input
+                  type="datetime-local"
+                  id="reminder"
+                  name="reminder"
+                  [(ngModel)]="newTask.reminder"
+                  class="form-input">
+              </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Add Task</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Task List -->
+      <div class="card task-list-card">
+        <div class="card-header">
+          <h3>Important Tasks</h3>
+        </div>
+        <div class="card-body">
+          <div class="task-grid">
+            <div *ngFor="let task of filteredTasks" class="task-item" [class.completed]="task.completed">
+              <div class="task-header">
+                <div class="task-title-group">
+                  <input
+                    type="checkbox"
+                    [checked]="task.completed"
+                    (change)="toggleTaskComplete(task)"
+                    class="task-checkbox">
+                  <h4>{{ task.title }}</h4>
+                </div>
+                <button (click)="deleteTask(task.id)" class="btn-delete">×</button>
+              </div>
+
+              <p class="task-description">{{ task.description }}</p>
+
+              <div class="task-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="task.progress"></div>
+                </div>
+                <select
+                  [(ngModel)]="task.progress"
+                  (change)="updateTaskProgress(task, task.progress)"
+                  class="progress-select">
+                  <option value="0">0%</option>
+                  <option value="25">25%</option>
+                  <option value="50">50%</option>
+                  <option value="75">75%</option>
+                  <option value="100">100%</option>
+                </select>
+              </div>
+
+              <div class="task-meta">
+                <span class="category">
+                  <i class="fas fa-folder"></i>
+                  {{ task.category }}
+                </span>
+                <span class="deadline">
+                  <i class="fas fa-calendar"></i>
+                  {{ task.deadline | date:'mediumDate' }}
+                </span>
+                <span class="priority" [class]="task.priority">
+                  <i class="fas fa-flag"></i>
+                  {{ task.priority }}
+                </span>
+              </div>
+
+              <div class="task-reminder" *ngIf="task.reminder">
+                <i class="fas fa-bell"></i>
+                {{ task.reminder | date:'medium' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

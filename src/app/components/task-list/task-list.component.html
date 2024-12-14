@@ -1,0 +1,64 @@
+<!-- task-list.component.html -->
+<div class="task-list">
+  <div class="add-task">
+    <div class="input-group">
+      <i class="fas fa-tasks input-icon"></i>
+      <input
+        [(ngModel)]="newTaskTitle"
+        (keyup.enter)="addTask()"
+        placeholder="Add a new task"
+        class="task-input"
+      >
+    </div>
+    <div class="input-group">
+      <i class="fas fa-calendar-alt input-icon"></i>
+      <input
+        type="datetime-local"
+        [(ngModel)]="newTaskDeadline"
+        class="deadline-input"
+      >
+    </div>
+    <button (click)="addTask()" class="add-button">
+      <i class="fas fa-plus"></i>
+      Add Task
+    </button>
+  </div>
+
+  <div class="tasks-section">
+    <h2 class="section-title">
+      <i class="fas fa-list"></i>
+      Active Tasks
+    </h2>
+    <div class="tasks-container">
+      <app-task-item
+        *ngFor="let task of activeTasks"
+        [task]="task"
+        (toggleComplete)="toggleComplete($event)"
+        (toggleImportant)="toggleImportant($event)"
+        (deleteTask)="deleteTask($event)"
+        (updateTask)="updateTask($event)"
+      ></app-task-item>
+      <div *ngIf="activeTasks.length === 0" class="empty-state">
+        <i class="fas fa-clipboard-list"></i>
+        No active tasks. Add a task to get started!
+      </div>
+    </div>
+  </div>
+
+  <div class="tasks-section" *ngIf="completedTasks.length > 0">
+    <h2 class="section-title">
+      <i class="fas fa-check-circle"></i>
+      Completed Tasks
+    </h2>
+    <div class="tasks-container">
+      <app-task-item
+        *ngFor="let task of completedTasks"
+        [task]="task"
+        (toggleComplete)="toggleComplete($event)"
+        (toggleImportant)="toggleImportant($event)"
+        (deleteTask)="deleteTask($event)"
+        (updateTask)="updateTask($event)"
+      ></app-task-item>
+    </div>
+  </div>
+</div>

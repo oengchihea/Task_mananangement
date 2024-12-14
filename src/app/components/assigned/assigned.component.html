@@ -1,0 +1,100 @@
+<div class="assigned-container">
+  <div class="content-wrapper">
+    <div class="card assigned-card">
+      <div class="card-header">
+        <h2>Task Assignments</h2>
+        <button (click)="toggleNewTaskForm()" class="btn-add">
+          <i class="fas fa-plus"></i>
+          Assign New Task
+        </button>
+      </div>
+
+      <!-- New Task Form -->
+      <div class="new-task-form" *ngIf="showNewTaskForm">
+        <div class="form-group">
+          <label>Task Description</label>
+          <input type="text" [(ngModel)]="newTask.content" placeholder="Enter task description">
+        </div>
+        <div class="form-group">
+          <label>Assign To (Email)</label>
+          <input type="email" [(ngModel)]="newTask.assignTo" placeholder="Enter email address">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" [(ngModel)]="newTask.dueDate">
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select [(ngModel)]="newTask.priority">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button (click)="addTask()" class="btn-submit">Assign Task</button>
+          <button (click)="toggleNewTaskForm()" class="btn-cancel">Cancel</button>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="columns-grid">
+          <div *ngFor="let column of columns; let columnIndex = index" class="task-column">
+            <div class="column-header">
+              <h3>{{ column.title }}</h3>
+              <span class="task-count">{{ column.tasks.length }}</span>
+            </div>
+
+            <div
+              cdkDropList
+              [cdkDropListData]="column.tasks"
+              (cdkDropListDropped)="drop($event)"
+              [cdkDropListConnectedTo]="getConnectedList()"
+              [id]="'list-' + columnIndex"
+              class="tasks-list">
+
+              <div
+                *ngFor="let task of column.tasks; let taskIndex = index"
+                cdkDrag
+                class="task-card"
+                [style.borderColor]="task.color">
+
+                <div class="task-content">
+                  <p>{{ task.content }}</p>
+                  <div class="task-meta">
+                    <span class="assigned-to">
+                      <i class="fas fa-user"></i>
+                      {{ task.assignedTo }}
+                    </span>
+                    <span class="due-date">
+                      <i class="fas fa-calendar"></i>
+                      {{ task.dueDate | date:'shortDate' }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="task-footer">
+                  <span class="priority-badge" [class]="task.priority">
+                    {{ task.priority }}
+                  </span>
+                  <button
+                    (click)="deleteTask(columnIndex, taskIndex)"
+                    class="btn-delete">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="empty-list" *ngIf="column.tasks.length === 0">
+                No tasks in {{ column.title }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

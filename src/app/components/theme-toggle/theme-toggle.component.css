@@ -1,0 +1,54 @@
+.theme-toggle-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-btn:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  transform: scale(1.1);
+}
+
+.theme-toggle-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+.theme-toggle-btn i {
+  font-size: 1.25rem;
+  color: #4b5563;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-btn i.fa-sun {
+  color: #eab308;
+}
+
+.theme-toggle-btn i.fa-moon {
+  color: #6366f1;
+}
+
+:host-context(.dark) .theme-toggle-btn {
+  background-color: rgba(55, 65, 81, 0.1);
+}
+
+:host-context(.dark) .theme-toggle-btn:hover {
+  background-color: rgba(55, 65, 81, 0.2);
+}
+
+:host-context(.dark) .theme-toggle-btn i.fa-sun {
+  color: #fbbf24;
+}
+
+:host-context(.dark) .theme-toggle-btn i.fa-moon {
+  color: #818cf8;
+}

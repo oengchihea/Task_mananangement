@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Light theme variables */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-hover: #f3f4f6;
+  --bg-active: #e5e7eb;
+  --bg-badge: #e5e7eb;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --accent-color: #3b82f6;
+  --accent-hover: #2563eb;
+  --danger-color: #ef4444;
+  --success-color: #22c55e;
+}
+
+.dark {
+  /* Dark theme variables */
+  --bg-primary: #1a1f2e;
+  --bg-secondary: #242938;
+  --bg-hover: #2f3646;
+  --bg-active: #363d57;
+  --bg-badge: #363d57;
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --border-color: #363d57;
+  --accent-color: #60a5fa;
+  --accent-hover: #3b82f6;
+  --danger-color: #f87171;
+  --success-color: #4ade80;
+  --dialog-bg: #1a1f2e;
+  --dialog-border: #363d57;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+button {
+  font-family: 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Utility classes */
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Dialog styles */
+.dialog-container {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-container .mat-mdc-dialog-surface {
+  overflow: visible !important;
+}
+
+.dialog-backdrop {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+

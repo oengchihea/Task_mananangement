@@ -1,0 +1,77 @@
+<!-- task-item.component.html -->
+<div class="task-item" [class.completed]="task.completed" [class.important]="task.important">
+  <div class="task-content" *ngIf="!isEditing">
+    <div class="task-checkbox-wrapper">
+      <input
+        type="checkbox"
+        [checked]="task.completed"
+        (change)="toggleComplete.emit(task.id)"
+        class="task-checkbox"
+        [id]="'task-' + task.id"
+      >
+      <label [for]="'task-' + task.id" class="checkbox-label">
+        <i class="fas fa-check"></i>
+      </label>
+    </div>
+    <div class="task-details">
+      <span class="task-title">{{ task.title }}</span>
+      <div class="task-meta">
+        <span class="task-date">
+          <i class="fas fa-calendar-alt"></i>
+          Created: {{ formatDate(task.createdAt) }}
+        </span>
+        <span class="task-deadline" *ngIf="task.deadline">
+          <i class="fas fa-clock"></i>
+          Due: {{ formatDate(task.deadline) }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-edit" *ngIf="isEditing">
+    <input
+      type="text"
+      [(ngModel)]="editedTitle"
+      class="edit-input"
+      placeholder="Task title"
+    >
+    <input
+      type="datetime-local"
+      [(ngModel)]="editedDeadline"
+      class="edit-deadline"
+    >
+    <div class="edit-actions">
+      <button (click)="saveEdit()" class="save-btn" title="Save">
+        <i class="fas fa-check"></i>
+      </button>
+      <button (click)="cancelEdit()" class="cancel-btn" title="Cancel">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="task-actions" *ngIf="!isEditing">
+    <button
+      (click)="startEdit()"
+      class="edit-btn"
+      title="Edit task"
+    >
+      <i class="fas fa-edit"></i>
+    </button>
+    <button
+      (click)="toggleImportant.emit(task.id)"
+      class="important-btn"
+      [class.active]="task.important"
+      title="Mark as important"
+    >
+      <i class="fas fa-star"></i>
+    </button>
+    <button
+      class="delete-btn"
+      (click)="deleteTask.emit(task.id)"
+      title="Delete task"
+    >
+      <i class="fas fa-trash-alt"></i>
+    </button>
+  </div>
+</div>

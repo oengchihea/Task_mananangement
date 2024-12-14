@@ -1,0 +1,101 @@
+.sidebar {
+  width: 280px;
+  height: calc(100vh - 48px);
+  background-color: var(--bg-primary);
+  padding: 1rem;
+  transition: width 0.3s ease;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-menu li {
+  margin-bottom: 0.5rem;
+}
+
+.nav-menu a {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-menu a:hover {
+  background-color: var(--bg-hover);
+  transform: translateX(4px);
+}
+
+.nav-menu a.active {
+  background-color: var(--bg-active);
+  font-weight: 500;
+  color: var(--accent-color);
+}
+
+.icon {
+  margin-right: 0.75rem;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  transition: transform 0.2s ease;
+}
+
+.nav-menu a:hover .icon {
+  transform: scale(1.1);
+}
+
+.nav-menu a.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background-color: var(--accent-color);
+  border-radius: 0 2px 2px 0;
+}
+
+.nav-menu a .counter {
+  margin-left: auto;
+  background-color: var(--bg-badge);
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+}
+
+.nav-menu .separator {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 1rem 0;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .nav-menu a:hover {
+    transform: none;
+  }
+}
+

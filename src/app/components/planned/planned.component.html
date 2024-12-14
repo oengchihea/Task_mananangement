@@ -1,0 +1,62 @@
+<div class="planned-container">
+  <div class="content-wrapper">
+    <div class="card planner-card">
+      <div class="card-header">
+        <h2>Weekly Planner</h2>
+      </div>
+      <div class="card-body">
+        <div class="days-grid">
+          <div *ngFor="let day of days; let dayIndex = index" class="day-column">
+            <div class="day-header">
+              <h3>{{ day.day }}</h3>
+              <button (click)="addNote(dayIndex)" class="btn-add">
+                <i class="fas fa-plus"></i>
+                Add Note
+              </button>
+            </div>
+
+            <div
+              cdkDropList
+              [cdkDropListData]="day.notes"
+              (cdkDropListDropped)="drop($event)"
+              [cdkDropListConnectedTo]="getConnectedList()"
+              [id]="'list-' + dayIndex"
+              class="notes-list">
+
+              <div
+                *ngFor="let note of day.notes; let noteIndex = index"
+                cdkDrag
+                class="note-card"
+                [style.borderColor]="note.color">
+
+                <div class="note-content">
+                  {{ note.content }}
+                </div>
+
+                <div class="note-footer">
+                  <span class="note-time">
+                    {{ note.created | date:'shortTime' }}
+                  </span>
+                  <button
+                    (click)="deleteNote(dayIndex, noteIndex)"
+                    class="btn-delete">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+
+                <!-- Drag Preview -->
+                <div *cdkDragPreview class="note-card note-preview" [style.borderColor]="note.color">
+                  {{ note.content }}
+                </div>
+              </div>
+
+              <div class="empty-list" *ngIf="day.notes.length === 0">
+                No notes for {{ day.day }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
